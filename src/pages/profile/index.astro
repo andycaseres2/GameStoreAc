@@ -1,0 +1,18 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Navbar } from "../../components/Navbar.jsx";
+import { Footer } from "../../components/Footer.jsx";
+import { ScrollUpButton } from "../../components/ScrollUpButton";
+import { Hero } from "../../components/Hero.jsx";
+import "../../styles/Theme.css";
+import "../../styles/Diagonals.css";
+import UserInfo from "../../components/Forms/UserInfo";
+---
+
+<Layout title="GameStoreAc - Profile">
+  <Navbar client:load />
+  <Hero text={"Administra tu perfil: ¡Agrega, edita y elimina juegos en GameStoreAc!"} title={"Tu perfil, tu control: Actualiza tus juegos y gestiona tu colección en GameStoreAc."} subTitle={"¡Control total! Administra tu perfil de usuario y juegos en GameStoreAc de manera fácil y rápida."} client:load />
+  <UserInfo client:load />
+  <Footer />
+  <ScrollUpButton client:load />
+</Layout>

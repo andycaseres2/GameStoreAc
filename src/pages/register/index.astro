@@ -1,0 +1,16 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Navbar } from "../../components/Navbar.jsx";
+import { Footer } from "../../components/Footer.jsx";
+import { ScrollUpButton } from "../../components/ScrollUpButton";
+import { RegisterForm } from "../../components/Forms/RegisterForm";
+import "../../styles/Theme.css";
+import "../../styles/Diagonals.css";
+---
+
+<Layout title="GameStoreAc - Sing In">
+  <Navbar textButton={"Sign In"} buttonRedirect={"/signin"} client:load />
+  <RegisterForm client:load />
+  <Footer />
+  <ScrollUpButton client:load />
+</Layout>
