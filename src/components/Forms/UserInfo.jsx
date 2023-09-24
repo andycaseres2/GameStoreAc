@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useStore } from "../../store/store";
 import updateUser from "../../services/updateUser";
-import InputUpdate from "../Inputs/InputUpdate";
-import InputFile from "../Inputs/InputFile";
 import { uploadImageToStorage } from "../../services/addImageUser";
-import Button from "../Buttons/Button";
-import { PlusIcon } from "../../assets/icons/PlusIcon";
-import { ListIcon } from "../../assets/icons/ListIcon";
-import { AddProductModal } from "../AddProductModal";
+import ProfileUser from "../organism/ProfileUser";
+import SectionProducts from "../organism/SectionProducts";
 
 const UserInfo = () => {
-  const { user } = useStore();
+  const { user, setRealtime } = useStore();
+
   const [formData, setFormData] = useState({
     name: "",
     surname: "",
@@ -21,19 +18,20 @@ const UserInfo = () => {
     image: "",
   });
   const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState("");
+  const [updateUserError, setUpdateUserError] = useState("");
 
   useEffect(() => {
     setFormData((prevFormData) => ({
       ...prevFormData,
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
-      password: user.password,
-      phone: user.phone,
-      image: user.image,
+      name: user?.name,
+      surname: user?.surname,
+      email: user?.email,
+      password: user?.password,
+      phone: user?.phone,
+      image: user?.image,
     }));
-    setImagePreviewUrl(user.image);
+    setImagePreviewUrl(user?.image);
   }, [user]);
 
   const handleInputChange = (event) => {
@@ -50,7 +48,21 @@ const UserInfo = () => {
 
   const saveUserData = async (event) => {
     event.preventDefault();
-    await updateUser(user.id, formData);
+    try {
+      const userData = {
+        name: formData.name,
+        surname: formData.surname,
+        email: formData.email,
+        password: formData.password,
+        phone: formData.phone,
+        image: formData.image,
+      };
+      await updateUser(user.id, userData);
+      setRealtime(true);
+      setUpdateUserSuccess("User Updated successfully");
+    } catch (error) {
+      setUpdateUserError("Error updating user", error);
+    }
   };
 
   return (
@@ -66,91 +78,20 @@ const UserInfo = () => {
       >
         <div className="flex flex-wrap items-center 2xl:w-[1450px] xl:w-[1300px] w-11/12 mx-auto md:pl-4 xl:pr-16 xl:pl-16">
           <div className="w-full flex mb-12 lg:mb-0">
-            <div className="w-full">
-              <span className="custom-block-subtitle">User Information</span>
-              <h2 className="mt-6 mb-8 text-4xl lg:text-5xl custom-block-big-title">
-                Profile
-              </h2>
-              <form
-                onSubmit={saveUserData}
-                className="w-full flex flex-col gap-4"
-              >
-                <InputUpdate
-                  label="Name"
-                  name="name"
-                  type="text"
-                  placeholder="Name"
-                  value={formData.name}
-                  className={"w-9/12"}
-                  setState={handleInputChange}
-                />
-                <InputUpdate
-                  label="Surname"
-                  type="text"
-                  name="surname"
-                  placeholder="Surname"
-                  value={formData.surname}
-                  setState={handleInputChange}
-                  className={"w-9/12"}
-                />
-                <InputUpdate
-                  label="Email"
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  setState={handleInputChange}
-                  className={"w-9/12"}
-                />
-                <InputUpdate
-                  label="Password"
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={formData.password}
-                  setState={handleInputChange}
-                  className={"w-9/12"}
-                />
-                <InputUpdate
-                  label="Phone"
-                  type="phone"
-                  name="phone"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  setState={handleInputChange}
-                  className={"w-9/12"}
-                />
+            <ProfileUser
+              formData={formData}
+              imagePreviewUrl={imagePreviewUrl}
+              updateUserError={updateUserError}
+              updateUserSuccess={updateUserSuccess}
+              handleImageChange={handleImageChange}
+              handleInputChange={handleInputChange}
+              saveUserData={saveUserData}
+              setImagePreviewUrl={setImagePreviewUrl}
+            />
 
-                <InputFile
-                  label="Add Image"
-                  className={"w-9/12"}
-                  designButton="w-max font-bold text-md"
-                  onChange={handleImageChange}
-                  setImagePreviewUrl={setImagePreviewUrl}
-                  imagePreviewUrl={imagePreviewUrl}
-                />
-                <div className="w-full flex justify-start">
-                  <button
-                    className="text-white custom-border-gray rounded-xl
-           bg-customDarkBg2 hover:bg-customDarkBg3  border-gray-700 pl-6 pr-8 pt-2 pb-2 text-md flex gap-2 items-center justify-center w-1/3"
-                    onClick={(e) => saveUserData(e)}
-                  >
-                    Save
-                  </button>
-                </div>
-              </form>
-            </div>
-            <div className="w-full flex gap-8 justify-end">
-              <Button text={"Add product"} action={() => setIsOpen(true)}>
-                <PlusIcon />
-              </Button>
-              <Button text={"List product"}>
-                <ListIcon />
-              </Button>
-            </div>
+            <SectionProducts />
           </div>
         </div>
-        {isOpen && <AddProductModal setIsOpen={setIsOpen} />}
       </motion.div>
     </section>
   );

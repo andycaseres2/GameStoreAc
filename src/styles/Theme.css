@@ -60,3 +60,10 @@ html {
 @font-face {
   font-display: var(--fontsource-Inter-font-display, optional);
 }
+
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 30px rgb(38, 39, 43) inset !important;
+  -webkit-text-fill-color: #fff !important;
+  background-color: transparent !important; /* Fondo transparente */
+}

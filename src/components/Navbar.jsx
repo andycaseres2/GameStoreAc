@@ -5,6 +5,7 @@ import Logo from "../assets/images/logo.webp";
 import { UserIcon } from "../assets/icons/UserIcon";
 import { SignOutIcon } from "../assets/icons/SignOutIcon";
 import { SignOut } from "../services/SignOut.js";
+import getProducts from "../services/getProducts.js";
 import getUserId from "../services/getUserId.js";
 import Button from "./Buttons/Button.jsx";
 import ButtonLink from "./Buttons/ButtonLink.jsx";
@@ -21,15 +22,33 @@ export const Navbar = ({
   buttonRedirect2,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { user, session, setUser, setSession } = useStore();
+  const {
+    user,
+    session,
+    setUser,
+    setSession,
+    setProducts,
+    realtime,
+    setRealtime,
+  } = useStore();
 
   useEffect(() => {
     const getUser = async () => {
-      const data = await getUserId(user.id);
+      const data = await getUserId(session.user.id);
       setUser(data[0]);
     };
     getUser();
-  }, [session]);
+    setRealtime(false);
+  }, [session, realtime]);
+
+  useEffect(() => {
+    const getDataProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+    };
+    getDataProducts();
+    setRealtime(false);
+  }, [realtime]);
 
   async function handleSignOut() {
     try {

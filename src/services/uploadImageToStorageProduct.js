@@ -1,7 +1,7 @@
 import { supabase } from "../supabase/supabase";
 import Compressor from "compressorjs";
 
-export async function uploadImageToStorage(file) {
+export async function uploadImageToStorageProduct(file) {
   // Comprimir y convertir la imagen a formato WebP
   const compressedImage = await new Promise((resolve, reject) => {
     new Compressor(file, {
@@ -16,21 +16,19 @@ export async function uploadImageToStorage(file) {
     });
   });
 
-  // Eliminar espacios y caracteres no permitidos del nombre de archivo
-  const cleanedFileName = compressedImage.name.replace(/[^a-z0-9_.-]/gi, "");
-
   // Subir la imagen comprimida y convertida a WebP a Supabase
   const { data, error } = await supabase.storage
     .from("gamestoreac")
-    .upload(`users/${cleanedFileName}.webp`, compressedImage, {
-      contentType: "image/webp",
-    });
+    .upload(
+      `products/${compressedImage.name.split(".")[0]}.webp`,
+      compressedImage
+    );
 
   if (error) {
     console.error(error);
     throw new Error(error.message);
   }
 
-  const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data?.path}`;
+  const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
   return publicUrl;
 }

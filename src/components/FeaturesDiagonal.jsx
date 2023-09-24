@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 
-import { InvitationModal } from "./AddProductModal";
+import { InvitationModal } from "./modals/AddProductModal";
 import featuresdiagonal from "../assets/images/featuresdiagonal.jpg";
 
 export const FeaturesDiagonal = () => {

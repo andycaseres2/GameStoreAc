@@ -4,6 +4,10 @@ import { create } from "zustand";
 const secretKey = "mysecretkey";
 
 export const useStore = create((set) => ({
+  products: [],
+  setProducts: (products) => set(() => ({ products })),
+  realtime: false,
+  setRealtime: (realtime) => set(() => ({ realtime })),
   user: getStoredUser(),
   session: getStoredSession(),
   setUser: (user) => {
