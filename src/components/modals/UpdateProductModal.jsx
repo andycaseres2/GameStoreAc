@@ -76,11 +76,11 @@ export const UpdateProductModal = ({ setIsOpen, productId }) => {
     event.preventDefault();
     try {
       await updateProduct(productId, formData);
-      setUpdateProductSuccess("Producto creado exitosamente");
+      setUpdateProductSuccess("Producto update exitosamente");
       setImageError("");
       setRealtime(true);
     } catch (error) {
-      setUpdateProductError("Error al crear el producto", error);
+      setUpdateProductError("Error al update el producto", error);
     }
   };
 
@@ -179,6 +179,7 @@ export const UpdateProductModal = ({ setIsOpen, productId }) => {
                           imagePreviewUrl={imagePreviewUrl}
                           styleImage={"rounded-lg w-32 h-32 "}
                           formData={formData}
+                          setFormData={setFormData}
                           isUpdateUser={false}
                           productId={productId}
                         />

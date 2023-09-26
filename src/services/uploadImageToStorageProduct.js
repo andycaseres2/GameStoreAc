@@ -2,6 +2,10 @@ import { supabase } from "../supabase/supabase";
 import Compressor from "compressorjs";
 
 export async function uploadImageToStorageProduct(file) {
+  const fileNameParts = file.name.split(".");
+  const fileName = fileNameParts[0];
+  const extension = fileNameParts[1];
+
   // Comprimir y convertir la imagen a formato WebP
   const compressedImage = await new Promise((resolve, reject) => {
     new Compressor(file, {
@@ -16,19 +20,39 @@ export async function uploadImageToStorageProduct(file) {
     });
   });
 
-  // Subir la imagen comprimida y convertida a WebP a Supabase
-  const { data, error } = await supabase.storage
-    .from("gamestoreac")
-    .upload(
-      `products/${compressedImage.name.split(".")[0]}.webp`,
-      compressedImage
-    );
+  let newFileName = fileName;
+  let i = 1;
 
-  if (error) {
-    console.error(error);
-    throw new Error(error.message);
+  while (true) {
+    const { error } = await supabase.storage
+      .from("gamestoreac")
+      .list(`products/${newFileName}.${extension}`);
+
+    if (error) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+
+    if (error || i === 1) {
+      newFileName = fileName;
+    } else {
+      newFileName = `${fileName}-${i}`;
+    }
+
+    i++;
+
+    const { data, error: uploadError } = await supabase.storage
+      .from("gamestoreac")
+      .upload(`products/${newFileName}.${extension}`, compressedImage);
+
+    if (uploadError) {
+      console.error(error);
+      throw new Error(error.message);
+    }
+
+    if (data) {
+      const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
+      return publicUrl;
+    }
   }
-
-  const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
-  return publicUrl;
 }

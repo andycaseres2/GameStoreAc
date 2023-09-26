@@ -1,9 +1,7 @@
 import React from "react";
 import { CloseIcon } from "../../assets/icons/CloseIcon";
 import deleteImage from "../../services/deleteImage";
-import { useStore } from "../../store/store";
-import updateUser from "../../services/updateUser";
-import updateProduct from "../../services/updateProduct";
+import defaultImage from "../../assets/images/defaultImage.webp";
 
 const InputFile = ({
   label,
@@ -13,11 +11,9 @@ const InputFile = ({
   setImagePreviewUrl,
   imagePreviewUrl,
   styleImage,
+  setFormData,
   formData,
-  isUpdateUser,
-  productId,
 }) => {
-  const { setRealtime, user } = useStore();
   const handleOnChange = (event) => {
     const file = event.target.files[0];
     const reader = new FileReader();
@@ -28,51 +24,14 @@ const InputFile = ({
     reader.readAsDataURL(file);
   };
 
-  const saveUserData = async (id) => {
-    try {
-      const userData = {
-        name: formData.name,
-        surname: formData.surname,
-        email: formData.email,
-        password: formData.password,
-        phone: formData.phone,
-        image: "",
-      };
-
-      await updateUser(id, userData);
-      setRealtime(true);
-    } catch (error) {
-      console.error("Error updating user", error);
-    }
-  };
-
-  const saveProductData = async () => {
-    try {
-      const productData = {
-        title: formData.title,
-        description: formData.description,
-        price: formData.price,
-        state: formData.state,
-        image: "",
-        likes: formData.likes,
-      };
-      await updateProduct(productId, productData);
-      setRealtime(true);
-    } catch (error) {
-      console.error("Error al crear el producto", error);
-    }
-  };
-
-  const handleDeleteImage = async (url, id) => {
+  const handleDeleteImage = async (url) => {
     const filename = await url.split("/").slice(-2).join("/");
     await deleteImage(filename);
-    if (isUpdateUser) {
-      await saveUserData(id);
-    } else {
-      await saveProductData(id, formData);
-    }
+    await setFormData({
+      ...formData,
+      image: "",
+    });
     await setImagePreviewUrl(null);
-    setRealtime(true);
   };
 
   return (
@@ -84,7 +43,7 @@ const InputFile = ({
         {label}
         <input type="file" className="hidden" onChange={handleOnChange} />
       </label>
-      {imagePreviewUrl && (
+      {imagePreviewUrl ? (
         <div className="relative">
           <img
             className={`${styleImage}`}
@@ -92,12 +51,18 @@ const InputFile = ({
             alt="Imagen previa"
           />
           <div
-            onClick={() => handleDeleteImage(imagePreviewUrl, user.id)}
+            onClick={() => handleDeleteImage(imagePreviewUrl)}
             className="w-8 h-8 bg-red-400 rounded-full absolute -top-3 -right-4 flex justify-center items-center cursor-pointer hover:scale-105 transition-all"
           >
             <CloseIcon className="w-5 h-5 fill-white  " />
           </div>
         </div>
+      ) : (
+        <img
+          className={`${styleImage}`}
+          src={defaultImage}
+          alt="Imagen previa"
+        />
       )}
     </div>
   );

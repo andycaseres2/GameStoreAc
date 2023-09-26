@@ -16,21 +16,41 @@ export async function uploadImageToStorage(file) {
     });
   });
 
-  // Eliminar espacios y caracteres no permitidos del nombre de archivo
   const cleanedFileName = compressedImage.name.replace(/[^a-z0-9_.-]/gi, "");
+  let newFileName = cleanedFileName;
+  let i = 1;
 
-  // Subir la imagen comprimida y convertida a WebP a Supabase
-  const { data, error } = await supabase.storage
-    .from("gamestoreac")
-    .upload(`users/${cleanedFileName}.webp`, compressedImage, {
-      contentType: "image/webp",
-    });
+  while (true) {
+    const { error: listError } = await supabase.storage
+      .from("gamestoreac")
+      .list(`users/${newFileName}.webp`);
 
-  if (error) {
-    console.error(error);
-    throw new Error(error.message);
+    if (listError) {
+      console.error(listError);
+      throw new Error(listError.message);
+    }
+
+    if (listError || i === 1) {
+      newFileName = cleanedFileName;
+    } else {
+      newFileName = `${cleanedFileName}-${i}`;
+    }
+
+    i++;
+
+    const { data, error: uploadError } = await supabase.storage
+      .from("gamestoreac")
+      .upload(`users/${newFileName}.webp`, compressedImage, {
+        contentType: "image/webp",
+      });
+
+    if (uploadError) {
+      console.error(uploadError);
+      // Espera 500ms antes de intentar cargar la imagen de nuevo
+      await new Promise((resolve) => setTimeout(resolve, 500));
+    } else {
+      const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
+      return publicUrl;
+    }
   }
-
-  const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data?.path}`;
-  return publicUrl;
 }

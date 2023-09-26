@@ -5,6 +5,7 @@ import Button from "../Buttons/Button";
 
 const ProfileUser = ({
   formData,
+  setFormData,
   handleInputChange,
   handleImageChange,
   saveUserData,
@@ -74,6 +75,7 @@ const ProfileUser = ({
           setImagePreviewUrl={setImagePreviewUrl}
           imagePreviewUrl={imagePreviewUrl}
           styleImage={"w-28 h-28 rounded-lg"}
+          setFormData={setFormData}
           formData={formData}
           isUpdateUser={true}
         />

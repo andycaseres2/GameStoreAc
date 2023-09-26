@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { EditIcon } from "../../assets/icons/EditIcon";
 import { DeleteIcon } from "../../assets/icons/DeleteIcon";
 import { SadIcon } from "../../assets/icons/SadIcon";
-import { ImageIcon } from "../../assets/icons/ImageIcon";
+import defaultImage from "../../assets/images/defaultImage.webp";
 
 const ListProducts = ({
   products,
@@ -34,7 +34,7 @@ const ListProducts = ({
                     alt={product.name}
                   />
                 ) : (
-                  <ImageIcon width={"70"} height={"70"} />
+                  <img className="w-16 h-16" src={defaultImage} alt="Imagen" />
                 )}
 
                 <p className="text-lg text-white">{product.title}</p>
@@ -42,7 +42,9 @@ const ListProducts = ({
                   <EditIcon
                     width={"26"}
                     height={"26"}
-                    className={"text-white cursor-pointer"}
+                    className={
+                      "text-white cursor-pointer hover:scale-105 transition-all"
+                    }
                     action={() => {
                       setProductId(product.id);
                       setViewUpdateModal(true);
@@ -51,7 +53,9 @@ const ListProducts = ({
                   <DeleteIcon
                     width={"26"}
                     height={"26"}
-                    className={"text-red-500 cursor-pointer"}
+                    className={
+                      "text-red-500 cursor-pointer hover:scale-105 transition-all"
+                    }
                     action={() => {
                       setProductId(product.id);
                       setViewConfirmationModal(true);

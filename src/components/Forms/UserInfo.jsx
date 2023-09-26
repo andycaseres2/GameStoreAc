@@ -80,6 +80,7 @@ const UserInfo = () => {
           <div className="w-full flex mb-12 lg:mb-0">
             <ProfileUser
               formData={formData}
+              setFormData={setFormData}
               imagePreviewUrl={imagePreviewUrl}
               updateUserError={updateUserError}
               updateUserSuccess={updateUserSuccess}
