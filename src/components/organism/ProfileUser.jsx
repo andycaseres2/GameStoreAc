@@ -16,7 +16,9 @@ const ProfileUser = ({
 }) => {
   return (
     <div className="w-full">
-      <span className="custom-block-subtitle">User Information</span>
+      <span className="custom-block-subtitle text-blue-500">
+        User Information
+      </span>
       <h2 className="mt-6 mb-8 text-4xl lg:text-5xl custom-block-big-title">
         Profile
       </h2>

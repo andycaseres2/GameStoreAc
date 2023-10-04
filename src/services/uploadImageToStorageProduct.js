@@ -20,8 +20,7 @@ export async function uploadImageToStorageProduct(file) {
     });
   });
 
-  let newFileName = fileName;
-  let i = 1;
+  let newFileName = `${fileName}_${Math.random().toString(36).substr(2, 9)}`;
 
   while (true) {
     const { error } = await supabase.storage
@@ -33,26 +32,23 @@ export async function uploadImageToStorageProduct(file) {
       throw new Error(error.message);
     }
 
-    if (error || i === 1) {
-      newFileName = fileName;
-    } else {
-      newFileName = `${fileName}-${i}`;
+    if (!error) {
+      const { data, error: uploadError } = await supabase.storage
+        .from("gamestoreac")
+        .upload(`products/${newFileName}.${extension}`, compressedImage);
+
+      if (uploadError) {
+        console.error(uploadError);
+        throw new Error(uploadError.message);
+      }
+
+      if (data) {
+        const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
+        return publicUrl;
+      }
     }
 
-    i++;
-
-    const { data, error: uploadError } = await supabase.storage
-      .from("gamestoreac")
-      .upload(`products/${newFileName}.${extension}`, compressedImage);
-
-    if (uploadError) {
-      console.error(error);
-      throw new Error(error.message);
-    }
-
-    if (data) {
-      const publicUrl = `https://jdqutuyidetohruhllra.supabase.co/storage/v1/object/public/gamestoreac/${data.path}`;
-      return publicUrl;
-    }
+    // si el archivo ya existe, seguir intentando con un nuevo nombre aleatorio
+    newFileName = `${fileName}_${Math.random().toString(36).substr(2, 9)}`;
   }
 }

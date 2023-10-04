@@ -1,8 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-
-import { InvitationModal } from "./modals/AddProductModal";
 import featuresdiagonal from "../assets/images/featuresdiagonal.jpg";
+import { SingleProductModal } from "./modals/SingleProductModal";
 
 export const FeaturesDiagonal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -73,7 +72,7 @@ export const FeaturesDiagonal = () => {
         </svg>
       </div>
       {isModalOpen && (
-        <InvitationModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+        <SingleProductModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
       )}
     </section>
   );

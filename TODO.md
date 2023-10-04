@@ -2,24 +2,18 @@
 
 1. aplicar delete users (mas confirmacion de eliminacion (estas seguro))❓
 
-2. investigar como se vera el home
+2. aplicar en el home un search para buscar productos
 
-3. crear el componente de las tarjetas 🧑‍💻🧑‍💻🧑‍💻🧑‍💻
+3. investigar como se vera News.
 
-4. correcciones del home para agregar la vista de las tarjetas
+4. investigar como se vera Footer.
 
-5. aplicar en el home un search para buscar productos
+5. todos los textos que esten en español pasarlos a ingles.
 
-6. investigar como se vera News
+6. agregar todos los elementos correspodientes en el.env.🧑‍💻🧑‍💻
 
-7. investigar como se vera Footer
+7. implementar funcionalidad de login de botones de redes sociales.🧑‍💻🧑‍💻
 
-8. todos los textos que esten en espapol pasarlos a ingles.
+8. CORREGIR TODO EL RESPONSIVE DE LA WEB.
 
-9. agregar todos los elementos correspodientes en el .env 🧑‍💻🧑‍💻
-
-10. agregar a las tarjetas el boton de likes
-
-11. crear la funcion de like en la card de product y que se actualize en tiempo real el valor del like.
-
-12. implementar funcionalidad de login de botones de redes sociales. 🧑‍💻🧑‍💻
+9. aplicar funcion update password (forget password).

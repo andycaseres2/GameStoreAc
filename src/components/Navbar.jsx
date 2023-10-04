@@ -3,12 +3,9 @@ import { motion } from "framer-motion";
 import { useStore } from "../store/store.js";
 import Logo from "../assets/images/logo.webp";
 import { UserIcon } from "../assets/icons/UserIcon";
-import { SignOutIcon } from "../assets/icons/SignOutIcon";
 import { SignOut } from "../services/SignOut.js";
 import getProducts from "../services/getProducts.js";
 import getUserId from "../services/getUserId.js";
-import Button from "./Buttons/Button.jsx";
-import ButtonLink from "./Buttons/ButtonLink.jsx";
 
 const navbarLinks = [
   { label: "Home", href: "/", ariaLabel: "Home" },
@@ -109,15 +106,38 @@ export const Navbar = ({
           <div className="grow basis-0 justify-end hidden lg:flex">
             {session && session.access_token ? (
               <div className="w-full flex gap-4">
-                <ButtonLink
-                  text={"Profile"}
-                  redirect="/profile"
-                  image={user?.image}
-                  alt={user?.name}
-                />
-                <Button text={"Sign out"} action={handleSignOut}>
-                  <SignOutIcon />
-                </Button>
+                {user?.image && (
+                  <img
+                    className="w-10 h-10 rounded-full cursor-pointer hover:scale-105 transition-all duration-300 ease-in-out relative"
+                    src={user?.image}
+                    alt={user?.name}
+                    onClick={() => setIsOpen(!isOpen)}
+                  />
+                )}
+                {isOpen && (
+                  <div className="absolute top-16 right-0">
+                    <div className="w-full flex flex-col text-white custom-border-gray rounded-xl bg-customDarkBg2 border-gray-700 px-4 py-2">
+                      <a
+                        href="/profile"
+                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
+                      >
+                        Profile
+                      </a>
+                      <a
+                        href="/forgot-password"
+                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
+                      >
+                        Forget password
+                      </a>
+                      <span
+                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
+                        onClick={handleSignOut}
+                      >
+                        Sign out
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="w-full flex gap-4">
@@ -143,14 +163,6 @@ export const Navbar = ({
             )}
           </div>
         </motion.div>
-        <div
-          className="lg:hidden flex flex-col  px-2 py-3 border-solid border border-gray-600 rounded-md cursor-pointer hover:bg-customDarkBg2"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <div className="w-5 h-0.5 bg-gray-500  mb-1"></div>
-          <div className="w-5 h-0.5 bg-gray-500  mb-1"></div>
-          <div className="w-5 h-0.5 bg-gray-500 "></div>
-        </div>
       </div>
       {/* Mobile navbar */}
     </nav>

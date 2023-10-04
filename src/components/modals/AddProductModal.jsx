@@ -110,16 +110,16 @@ export const AddProductModal = ({ setIsOpen }) => {
         exit={{ opacity: 0 }}
       >
         <div
-          className="w-full h-full  bg-customDarkBgTransparentDarker fixed top-0 left-0 flex  z-50 justify-center items-center"
+          className="w-full h-full  bg-customDarkBgTransparentDarker fixed top-4 left-0 flex z-50 justify-center items-center"
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="w-full h-screen sm:h-auto sm:w-3/4 md:w-3/5 lg:w-[1000px] xl:w-[1100px] sm:rounded-2xl bg-customDarkBgTransparentLighter custom-border-gray-darker py-12 px-8 sm:px-16 backdrop-blur-xl sm:mb-8 fixed mx-auto z-50"
+            className="w-full sm:w-3/4 md:w-3/5 lg:w-[1000px] xl:w-[1100px] sm:rounded-2xl bg-customDarkBgTransparentLighter custom-border-gray-darker py-6 px-8 sm:px-16 backdrop-blur-xl sm:mb-8 fixed mx-auto z-50"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-center relative">
               <div className="w-full flex flex-col items-center justify-center">
-                <h2 className="text-5xl font-bold tracking-normal text-customSecondary">
+                <h2 className="text-5xl font-bold tracking-normal text-blue-500">
                   Add product
                 </h2>
                 <motion.div
@@ -129,10 +129,10 @@ export const AddProductModal = ({ setIsOpen }) => {
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="w-full flex justify-center"
                 >
-                  <div className="w-8/12 fle py-10">
+                  <div className="w-8/12 fle pt-4">
                     <form
                       onSubmit={saveProductData}
-                      className="w-full flex flex-col gap-4 justify-center items-center"
+                      className="w-full flex flex-col gap-2 justify-center items-center"
                     >
                       <div className="w-9/12 flex flex-col justify-start gap-2">
                         <InputUpdate
@@ -224,7 +224,7 @@ export const AddProductModal = ({ setIsOpen }) => {
                         </p>
                       )}
 
-                      <div className="w-full flex justify-center gap-8 pt-8">
+                      <div className="w-full flex justify-center gap-8 pt-2">
                         <Button
                           text="Save"
                           className="w-1/3 text-lg font-bold flex justify-center items-center"

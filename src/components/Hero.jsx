@@ -12,7 +12,7 @@ export const Hero = ({ text, title, subTitle }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="text-customSecondary text-sm sm:text-base mb-6 sm:mt-20 mt-12  font-bold">
+          <div className="text-blue-500 text-sm sm:text-base mb-6 sm:mt-20 mt-12  font-bold">
             {text}
           </div>
         </motion.div>

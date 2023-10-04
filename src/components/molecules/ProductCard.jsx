@@ -1,37 +1,51 @@
 import React from "react";
 import { motion } from "framer-motion";
+import { EmailFastIcon } from "../../assets/icons/EmailFastIcon";
+import { LikeIcon } from "../../assets/icons/LikeIcon";
 
-const ProductCard = () => {
+const ProductCard = ({ product, setProductId, setViewSingleProductModal }) => {
   return (
-    <section className="w-full flex justify-center pt-10 mb-16 lg:mb-32 bg-customDarkBg2 relative">
-      <div className="absolute -top-16" id="feedback" />
-      <div className="flex flex-col w-full lg:w-[1150px] justify-center">
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.3 }}
-        >
-          <div className="flex flex-col lg:flex-row gap-8 lg:gap-5 xl:gap-10 px-6 xl:px-0 items-center">
-            <div
-              className="w-11/12 sm:w-4/5 md:w-[560px] lg:w-1/3 custom-border-gray-darker rounded-xl bg-customDarkBg3 flex flex-col px-6 py-4"
-              key={`oki`}
-            >
-              <div className="custom-content-text-white">andy</div>
-              <div className="flex mt-4 mb-2 xl:mt-8 xl:mb-4">
-                <img src={""} alt="" width="45px" />
-                <div className="flex flex-col ml-4">
-                  <div className="custom-content-text-white font-medium">
-                    andy
-                  </div>
-                  <div className="custom-content-text-gray">andy</div>
-                </div>
-              </div>
-            </div>
+    <div
+      className="w-[300px] h-[430px] custom-border-gray-darker rounded-xl bg-customDarkBg3 flex flex-col p-6 relative hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
+      onClick={() => {
+        setViewSingleProductModal(true);
+        setProductId(product.id);
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <img
+          className="rounded-lg w-full h-56"
+          src={product.image}
+          alt={product.title}
+        />
+        <div className="flex flex-col gap-2 justify-between pt-4">
+          <h1 className="text-white font-bold text-xl">{product.title}</h1>
+          <p className="text-customGrayText text-xl">{product.price}$</p>
+          <div className="flex gap-1 items-center">
+            <p className="text-green-500 text-xl font-semibold">Envío gratis</p>
+            <EmailFastIcon
+              width={30}
+              height={30}
+              className="text-green-500 pt-1"
+            />
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+        <div className="bg-blue-600 px-6 py-2 w-max rounded-lg absolute top-4 left-3">
+          <p className="text-white font-bold text-xl capitalize">
+            {product.state}
+          </p>
+        </div>
+        <div className="w-full flex items-center gap-2 justify-end">
+          <p className="text-white text-xl pt-1">{product.likes}</p>
+          <LikeIcon width={30} height={30} className="text-blue-500" />
+        </div>
+      </motion.div>
+    </div>
   );
 };
 
