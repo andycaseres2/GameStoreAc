@@ -1,14 +1,29 @@
 import { motion } from "framer-motion";
-
+import { useEffect, useState } from "react";
 import ProductCard from "./molecules/ProductCard";
 import { useStore } from "../store/store";
 import { SingleProductModal } from "./modals/SingleProductModal";
-import { useState } from "react";
+import Input from "./Inputs/Input";
 
 export const ProductGrid = () => {
   const { products } = useStore();
   const [viewSingleProductModal, setViewSingleProductModal] = useState(false);
   const [productId, setProductId] = useState("");
+  const [listProducts, setListProducts] = useState([]);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (search === "") {
+      setListProducts(products);
+    } else {
+      setListProducts(
+        products.filter((product) => {
+          return product.title.toLowerCase().includes(search.toLowerCase());
+        })
+      );
+    }
+  }, [search]);
+
   return (
     <section className="w-full bg-customDarkBg2 py-12" id="products">
       <motion.div
@@ -17,8 +32,17 @@ export const ProductGrid = () => {
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <div className="container mx-auto px-4 w-4/5 md:w-11/12 lg:w-10/12 xl:w-4/5 2xl:w-2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-          {products.map((product) => (
+        <div className="w-full flex justify-center items-center py-8">
+          <Input
+            className={"w-1/3"}
+            name={"search"}
+            placeholder={"Search for products"}
+            setState={setSearch}
+            value={search}
+          />
+        </div>
+        <div className="container mx-auto px-4 w-4/5 md:w-11/12 lg:w-10/12 xl:w-4/5 2xl:w-2/3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 pt-10">
+          {(listProducts.length ? listProducts : products).map((product) => (
             <ProductCard
               key={product.id}
               product={product}

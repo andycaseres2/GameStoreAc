@@ -2,6 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { EmailFastIcon } from "../../assets/icons/EmailFastIcon";
 import { LikeIcon } from "../../assets/icons/LikeIcon";
+import { formatInMiles } from "../../utils/formatInMiles";
 
 const ProductCard = ({ product, setProductId, setViewSingleProductModal }) => {
   return (
@@ -25,7 +26,9 @@ const ProductCard = ({ product, setProductId, setViewSingleProductModal }) => {
         />
         <div className="flex flex-col gap-2 justify-between pt-4">
           <h1 className="text-white font-bold text-xl">{product.title}</h1>
-          <p className="text-customGrayText text-xl">{product.price}$</p>
+          <p className="text-customGrayText text-xl">
+            {formatInMiles(product.price)}$
+          </p>
           <div className="flex gap-1 items-center">
             <p className="text-green-500 text-xl font-semibold">Envío gratis</p>
             <EmailFastIcon

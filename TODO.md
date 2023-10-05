@@ -1,9 +1,5 @@
 # Tareas Pendientes
 
-1. aplicar delete users (mas confirmacion de eliminacion (estas seguro))❓
-
-2. aplicar en el home un search para buscar productos
-
 3. investigar como se vera News.
 
 4. investigar como se vera Footer.
