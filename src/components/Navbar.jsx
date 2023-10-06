@@ -71,7 +71,7 @@ export const Navbar = ({
           transition={{ duration: 0.3 }}
           exit={{ opacity: 0 }}
         >
-          <div className="hidden lg:flex h-full pl-12 pb-2">
+          <div className="hidden lg:flex h-full pb-2">
             {navbarLinks.map(({ href, label, ariaLabel }) => (
               <a
                 className="navbar-link"

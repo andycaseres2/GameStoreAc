@@ -10,8 +10,4 @@
    (1. url y key de supabase 2. url en la funcion recover Password
    )
 
-7. implementar funcionalidad de login de botones de redes sociales.🧑‍💻🧑‍💻
-
-8. CORREGIR TODO EL RESPONSIVE DE LA WEB.
-
-9. aplicar funcion forgot password
+7. CORREGIR TODO EL RESPONSIVE DE LA WEB.
