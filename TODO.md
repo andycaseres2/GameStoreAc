@@ -12,4 +12,4 @@
 
 8. CORREGIR TODO EL RESPONSIVE DE LA WEB.
 
-9. aplicar funcion update password (forget password).
+9. aplicar funcion forgot password

@@ -4,13 +4,26 @@ import ProductCard from "./molecules/ProductCard";
 import { useStore } from "../store/store";
 import { SingleProductModal } from "./modals/SingleProductModal";
 import Input from "./Inputs/Input";
+import { ModalShouldLogin } from "./modals/ModalShouldLogin";
+import { UserIcon } from "../assets/icons/UserIcon";
+import getProducts from "../services/getProducts";
 
 export const ProductGrid = () => {
-  const { products } = useStore();
+  const { products, session, realtime, setProducts, setRealtime } = useStore();
   const [viewSingleProductModal, setViewSingleProductModal] = useState(false);
+  const [viewModaLogin, setViewModaLogin] = useState(false);
   const [productId, setProductId] = useState("");
   const [listProducts, setListProducts] = useState([]);
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    const getDataProducts = async () => {
+      const data = await getProducts();
+      setProducts(data);
+    };
+    getDataProducts();
+    setRealtime(false);
+  }, [realtime]);
 
   useEffect(() => {
     if (search === "") {
@@ -48,14 +61,25 @@ export const ProductGrid = () => {
               product={product}
               setProductId={setProductId}
               setViewSingleProductModal={setViewSingleProductModal}
+              setViewModaLogin={setViewModaLogin}
             />
           ))}
         </div>
-        {viewSingleProductModal && (
+        {viewSingleProductModal && session && (
           <SingleProductModal
             setIsOpen={setViewSingleProductModal}
             productId={productId}
           />
+        )}
+        {viewModaLogin && !session && (
+          <ModalShouldLogin
+            textButton={"Sign in"}
+            redirect="/signin"
+            text={"You must log in to see product details"}
+            setIsOpen={setViewModaLogin}
+          >
+            <UserIcon width={60} height={60} className="text-blue-500" />
+          </ModalShouldLogin>
         )}
       </motion.div>
     </section>
