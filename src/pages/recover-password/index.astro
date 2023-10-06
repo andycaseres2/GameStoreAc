@@ -1,18 +1,22 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { Navbar } from "../../components/Navbar.jsx";
+import  RecoverPassword  from "../../components/Forms/RecoverPassword";
 import { Footer } from "../../components/Footer.jsx";
 import { ScrollUpButton } from "../../components/ScrollUpButton";
-import { SignInForm } from "../../components/Forms/SignInForm.jsx";
 import "../../styles/Theme.css";
 import "../../styles/Diagonals.css";
 ---
 
-<Layout title="GameStoreAc - Sing In">
-  <Navbar textButton={"Register"} buttonRedirect={"/register"}
-    textButton2={""}
-    buttonRedirect2={""} client:load />
-  <SignInForm client:load />
+<Layout title="GameStoreAc - Change Password">
+ <Navbar
+    textButton={"Sign In"}
+    buttonRedirect={"/signin"}
+    textButton2={"Register"}
+    buttonRedirect2={"/register"}
+    client:load
+  />
+  <RecoverPassword client:load />
   <Footer />
   <ScrollUpButton client:load />
 </Layout>
