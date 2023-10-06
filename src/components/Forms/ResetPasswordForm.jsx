@@ -1,29 +1,30 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Input from "../Inputs/Input";
-import { useStore } from "../../store/store";
-import { SignIn } from "../../services/SignIn";
+import resetPassword from "../../services/resetPassword";
+import { ModalShouldLogin } from "../modals/ModalShouldLogin";
+import { UserIcon } from "../../assets/icons/UserIcon";
 
-export const SignInForm = () => {
+export const ResetPasswordForm = () => {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { setSession } = useStore();
-  const [userNotFound, setUserNotFound] = useState(false);
+  const [messageSend, setMessageSend] = useState(false);
+  const [emailNotFound, setEmailNotFound] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const { data, error } = await SignIn(email, password);
-
-    if (error) {
-      setUserNotFound(true);
-      setTimeout(() => {
-        setUserNotFound(false);
-      }, 3000);
-      return data;
+    if (email === "") {
+      return;
     }
-    setSession(data.session);
-    window.location.href = "/";
-    return data;
+    const { found } = await resetPassword(email);
+    if (!found) {
+      setEmailNotFound(true);
+      setTimeout(() => {
+        setEmailNotFound(false);
+      }, 3000);
+      return;
+    }
+    setEmail("");
+    setMessageSend(true);
   }
 
   return (
@@ -34,7 +35,7 @@ export const SignInForm = () => {
         transition={{ duration: 0.5 }}
         className="w-full flex flex-col justify-center items-center"
       >
-        <h1 className="text-4xl font-bold text-white">Sign In</h1>
+        <h1 className="text-4xl font-bold text-white mb-16">Reset Password</h1>
         <form
           onSubmit={handleSubmit}
           className="w-full flex flex-col gap-8 px-44 justify-center items-center"
@@ -47,34 +48,32 @@ export const SignInForm = () => {
             setState={setEmail}
             className={"w-9/12"}
           />
-          <Input
-            label="Password"
-            type="password"
-            placeholder="Password"
-            value={password}
-            setState={setPassword}
-            className={"w-9/12"}
-          />
-          {userNotFound && (
-            <span className="text-red-500">Email or password is incorrect</span>
+
+          {emailNotFound && (
+            <span className="text-red-500"> Email not found</span>
           )}
 
           <div className="w-full flex flex-col gap-10 justify-center items-center pt-6">
             <button
               className="w-max text-white custom-border-gray rounded-xl
            bg-customDarkBg2 hover:bg-customDarkBg3  border-gray-700 py-3 px-14"
+              disabled={email === ""}
             >
-              Sign In
+              Reset password
             </button>
-
-            <a
-              href="/reset-password"
-              className="text-white hover:text-gray-500 cursor-pointer transition-all hover:scale-105"
-            >
-              CAN'T SIGN IN?
-            </a>
           </div>
         </form>
+
+        {messageSend && (
+          <ModalShouldLogin
+            textButton={"Ok"}
+            redirect="/signin"
+            text={"check your email a password recovery message has been sent"}
+            setIsOpen={setMessageSend}
+          >
+            <UserIcon width={60} height={60} className="text-blue-500" />
+          </ModalShouldLogin>
+        )}
       </motion.div>
     </div>
   );

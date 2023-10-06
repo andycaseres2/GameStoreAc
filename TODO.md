@@ -7,6 +7,8 @@
 5. todos los textos que esten en español pasarlos a ingles.
 
 6. agregar todos los elementos correspodientes en el.env.🧑‍💻🧑‍💻
+   (1. url y key de supabase 2. url en la funcion recover Password
+   )
 
 7. implementar funcionalidad de login de botones de redes sociales.🧑‍💻🧑‍💻
 
