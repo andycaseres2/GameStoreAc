@@ -10,7 +10,12 @@ import UserInfo from "../../components/Forms/UserInfo";
 ---
 
 <Layout title="GameStoreAc - Profile">
-  <Navbar client:load />
+  <Navbar client:load
+    textButton={""}
+    buttonRedirect={""}
+    textButton2={""}
+    buttonRedirect2={""}
+  /> 
   <Hero text={"Administra tu perfil: ¡Agrega, edita y elimina juegos en GameStoreAc!"} title={"Tu perfil, tu control: Actualiza tus juegos y gestiona tu colección en GameStoreAc."} subTitle={"¡Control total! Administra tu perfil de usuario y juegos en GameStoreAc de manera fácil y rápida."} client:load />
   <UserInfo client:load />
   <Footer />

@@ -2,13 +2,26 @@ import React from "react";
 import { motion } from "framer-motion";
 import { EmailFastIcon } from "../../assets/icons/EmailFastIcon";
 import { LikeIcon } from "../../assets/icons/LikeIcon";
+import { formatInMiles } from "../../utils/formatInMiles";
+import { useStore } from "../../store/store";
 
-const ProductCard = ({ product, setProductId, setViewSingleProductModal }) => {
+const ProductCard = ({
+  product,
+  setProductId,
+  setViewSingleProductModal,
+  setViewModaLogin,
+}) => {
+  const { session } = useStore();
   return (
     <div
-      className="w-[300px] h-[430px] custom-border-gray-darker rounded-xl bg-customDarkBg3 flex flex-col p-6 relative hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
+      className="w-[330px] h-[430px] custom-border-gray-darker rounded-xl bg-customDarkBg3 flex flex-col p-6 relative hover:scale-105 transition-all duration-300 ease-in-out cursor-pointer"
       onClick={() => {
-        setViewSingleProductModal(true);
+        if (session) {
+          setViewSingleProductModal(true);
+        } else {
+          setViewModaLogin(true);
+        }
+
         setProductId(product.id);
       }}
     >
@@ -19,13 +32,15 @@ const ProductCard = ({ product, setProductId, setViewSingleProductModal }) => {
         transition={{ duration: 0.5, delay: 0.2 }}
       >
         <img
-          className="rounded-lg w-full h-56"
+          className="rounded-lg w-full h-52"
           src={product.image}
           alt={product.title}
         />
         <div className="flex flex-col gap-2 justify-between pt-4">
-          <h1 className="text-white font-bold text-xl">{product.title}</h1>
-          <p className="text-customGrayText text-xl">{product.price}$</p>
+          <h1 className="text-white font-bold text-xl h-14">{product.title}</h1>
+          <p className="text-customGrayText text-xl">
+            {formatInMiles(product.price)}$
+          </p>
           <div className="flex gap-1 items-center">
             <p className="text-green-500 text-xl font-semibold">Envío gratis</p>
             <EmailFastIcon

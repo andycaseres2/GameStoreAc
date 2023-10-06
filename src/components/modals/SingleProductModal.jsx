@@ -18,7 +18,7 @@ export const SingleProductModal = ({ setIsOpen, productId }) => {
       setRealtime(true);
     };
     getProduct();
-  }, [realtime, productId]);
+  }, [realtime, productId, singleProduct]);
 
   const addLikes = async (productId) => {
     const productData = {
@@ -107,8 +107,8 @@ export const SingleProductModal = ({ setIsOpen, productId }) => {
               >
                 <CloseIcon />
               </div>
-              <div className="bg-blue-600 px-6 py-2 w-max rounded-lg absolute top-4 left-3">
-                <p className="text-white font-bold text-2xl">
+              <div className="bg-blue-600 px-6 py-2 w-max rounded-lg absolute bottom-8 -left-4">
+                <p className="text-white font-bold text-2xl capitalize">
                   {singleProduct.state}
                 </p>
               </div>

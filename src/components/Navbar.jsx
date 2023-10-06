@@ -3,9 +3,8 @@ import { motion } from "framer-motion";
 import { useStore } from "../store/store.js";
 import Logo from "../assets/images/logo.webp";
 import { UserIcon } from "../assets/icons/UserIcon";
-import { SignOut } from "../services/SignOut.js";
-import getProducts from "../services/getProducts.js";
 import getUserId from "../services/getUserId.js";
+import { useSignOut } from "../hooks/useSignOut.jsx";
 
 const navbarLinks = [
   { label: "Home", href: "/", ariaLabel: "Home" },
@@ -19,15 +18,8 @@ export const Navbar = ({
   buttonRedirect2,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const {
-    user,
-    session,
-    setUser,
-    setSession,
-    setProducts,
-    realtime,
-    setRealtime,
-  } = useStore();
+  const { user, session, setUser, realtime, setRealtime } = useStore();
+  const handleSignOut = useSignOut();
 
   useEffect(() => {
     const getUser = async () => {
@@ -38,25 +30,20 @@ export const Navbar = ({
     setRealtime(false);
   }, [session, realtime]);
 
-  useEffect(() => {
-    const getDataProducts = async () => {
-      const data = await getProducts();
-      setProducts(data);
-    };
-    getDataProducts();
-    setRealtime(false);
-  }, [realtime]);
-
-  async function handleSignOut() {
-    try {
-      await SignOut();
-      await setUser(null);
-      await setSession(null);
-      window.location.href = "/";
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  }
+  const navbarOptiones = [
+    { text: "Profile", href: "/profile", ariaLabel: "Profile" },
+    {
+      text: "Change Password",
+      href: "/change-password",
+      ariaLabel: "Change Password",
+    },
+    {
+      text: "Sign Out",
+      href: "",
+      ariaLabel: "Sign Out",
+      action: () => handleSignOut(),
+    },
+  ];
 
   return (
     <nav className="w-full h-20 flex flex-col justify-center items-center fixed bg-customDarkBg1 lg:bg-customDarkBgTransparent z-40 lg:backdrop-blur-xl">
@@ -91,6 +78,9 @@ export const Navbar = ({
                 href={href}
                 aria-label={ariaLabel}
                 key={label}
+                onClick={() => {
+                  action && action();
+                }}
               >
                 {label}
               </a>
@@ -117,24 +107,18 @@ export const Navbar = ({
                 {isOpen && (
                   <div className="absolute top-16 right-0">
                     <div className="w-full flex flex-col text-white custom-border-gray rounded-xl bg-customDarkBg2 border-gray-700 px-4 py-2">
-                      <a
-                        href="/profile"
-                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
-                      >
-                        Profile
-                      </a>
-                      <a
-                        href="/forgot-password"
-                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
-                      >
-                        Forget password
-                      </a>
-                      <span
-                        className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
-                        onClick={handleSignOut}
-                      >
-                        Sign out
-                      </span>
+                      {navbarOptiones.map(
+                        ({ href, text, ariaLabel, action }) => (
+                          <a
+                            href={!action && href}
+                            aria-label={ariaLabel}
+                            onClick={action && action}
+                            className="cursor-pointer text-sm hover:scale-105 transition-all duration-300 ease-in-out p-2"
+                          >
+                            {text}
+                          </a>
+                        )
+                      )}
                     </div>
                   </div>
                 )}

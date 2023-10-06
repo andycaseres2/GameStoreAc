@@ -94,9 +94,14 @@ export const AddProductModal = ({ setIsOpen }) => {
         };
         await handleClickSave(product);
         setAddProductSuccess("Producto creado exitosamente");
+        setAddProductError("");
         setImageError("");
+        setTimeout(() => {
+          setAddProductSuccess("");
+        }, 3000);
       } catch (error) {
         setAddProductError("Error al crear el producto", error);
+        setAddProductSuccess("");
       }
     }
   };
